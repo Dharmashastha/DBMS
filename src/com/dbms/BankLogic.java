@@ -3,6 +3,8 @@ package com.dbms;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.test.CustomException;
+import com.test.HelperUtil;
 import com.test.InputCenter;
 
 public class BankLogic {
@@ -12,10 +14,9 @@ public class BankLogic {
 	private long customerId=100000;
 	private long accuontNo=20000;
 	
-	long saved=00000;
-	
-	Map<Long,Object> mapCall=new HashMap<Long,Object>();
-	Map<Long,Map<Long,Object>> map=new HashMap<Long,Map<Long,Object>>();
+	Map<Long,CustomerInfo> customerMap=new HashMap<>();
+	Map<Long,Map<Long,AccountInfo>> accountMap=new HashMap<>();
+	Map<Long,AccountInfo> newAccount=new HashMap<>();
 	
 public long addNewCustomerId()
 {
@@ -26,55 +27,60 @@ public long addNewAccountNo()
 {
 return ++accuontNo;	
 }
-public Map<Long,Object> addCustomberDetails()
+
+public double setMinBalance() throws CustomException
 {
-	System.out.println("How many customer's details add list:");
-	int length=inputCall.getInt();
-	for(int i=1;i <= length;i++)
-	{
-		CustomerInfo customer=new CustomerInfo();
-		
-		System.out.println(i +" customer details");
-		
-		System.out.println("Set CustomerName:");
-		
-		customer.setCustomerName(inputCall.getString());
-		System.out.println("Set DateOfBirth:");
-		customer.setDob(inputCall.getString());
-		System.out.println("Set Address:");
-		customer.setAddress(inputCall.getString());
-		saved=addNewCustomerId();
-		mapCall.put(saved,customer);
-	}
-return mapCall;
+	AccountInfo account= new AccountInfo();
+	HelperUtil.nullCheckFile(account);
+	account.setBalance(1000.00);
+return 	account.getBalance();
 }
 
-public Map<Long,Map<Long,Object>> addAccountDetails(long customerId,Object objCall)
+public Map<Long,CustomerInfo> addCustomerDetails(CustomerInfo CustObj) throws CustomException
 {
-	if(mapCall.containsKey(customerId))
+		long custId;
+		HelperUtil.nullCheckObject(CustObj);
+		custId=addNewCustomerId();
+		customerMap.put(custId,CustObj);
+return customerMap;
+}
+
+public Map<Long,Map<Long,AccountInfo>> addAccountDetails(AccountInfo account,long customerId,long accNo) throws CustomException
+{
+	
+	if(customerMap.get(customerId) != null)
 	{
-		map.put(saved, mapCall);
-		map.get(saved).put(addNewAccountNo(), objCall);
-		return map;
+		accountMap.put(customerId, (Map<Long, AccountInfo>) accountMap.get(customerId).put(accNo, account));
+		return accountMap;
 	}
-	else
-	{
-		return null;
-	}
+	return null;
 	
 }
 
-//public Map<Long,Object> newAccountId(Map mapCall,long customerId)
-//{
-//	if(mapCall.get(customerId) != null )
-//	{
-//		
-//		return mapCall;
-//	}
-//	else
-//	{
-//		return null;
-//	}
-//		
-//}
+public Object retrieveAccount(long customerId,long accountNo)
+{
+	if(accountMap.containsKey(customerId) && accountMap.get(customerId).containsKey(accountNo))
+	{
+		
+		return accountMap.get(customerId).get(accountNo);	
+	}
+	else
+	{
+		return "accountNo";
+	}
+}
+
+public Object retrieveCustomer(long customerId)
+{
+	CustomerInfo saved=customerMap.get(customerId);
+	if(saved != null)
+	{
+	return	saved;	
+	}
+	else
+	{
+		return "customerId";
+	}
+}
+
 }
