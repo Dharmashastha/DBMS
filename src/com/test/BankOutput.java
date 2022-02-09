@@ -90,33 +90,30 @@ case 1:
 }
 case 2:
 {
+	try {
 		System.out.println("Enter the customerId:");
 		long customerId=inputCall.getLong();
 		System.out.println("Enter the AccountNo:");
 		long accountNo=inputCall.getLong();
 		Object dummyObj=bankCall.retrieveAccount(customerId,accountNo);
-		if(!dummyObj.equals("accountNo"))
-		{
 			System.out.println(dummyObj);
 		}
-		else
-		{
-			System.out.println("customerId/AccountNo Invalid");
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		break;
 }
 case 3:
 {	
+	try {
 		System.out.println("Enter the customerId:");
 		long customerId=inputCall.getLong();
 		Object dummyObj=bankCall.retrieveCustomer(customerId);
-		if(!dummyObj.equals("customerId"))
-		{
+	
 			System.out.println(dummyObj);
 		}
-		else
-		{
-			System.out.println("CustomerId Invalid");
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		break;
 }

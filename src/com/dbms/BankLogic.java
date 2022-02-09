@@ -16,8 +16,14 @@ public class BankLogic {
 	
 	Map<Long,CustomerInfo> customerMap=new HashMap<>();
 	Map<Long,Map<Long,AccountInfo>> accountMap=new HashMap<>();
-	Map<Long,AccountInfo> newAccount=new HashMap<>();
 	
+public void nullCheckMap(long customerId) throws CustomException
+{
+	if(accountMap.get(customerId) == null)
+	{
+		throw new CustomException("customerId Invalid");
+	}	
+}
 public long addNewCustomerId()
 {
 return ++customerId;		
@@ -48,39 +54,44 @@ return customerMap;
 public Map<Long,Map<Long,AccountInfo>> addAccountDetails(AccountInfo account,long customerId,long accNo) throws CustomException
 {
 	
-	if(customerMap.get(customerId) != null)
-	{
-		accountMap.put(customerId, (Map<Long, AccountInfo>) accountMap.get(customerId).put(accNo, account));
-		return accountMap;
-	}
-	return null;
 	
-}
-
-public Object retrieveAccount(long customerId,long accountNo)
-{
-	if(accountMap.containsKey(customerId) && accountMap.get(customerId).containsKey(accountNo))
+	Map<Long, AccountInfo> custMap=accountMap.get(customerId);
+	
+	/*
+	 * if(custMap != null) { custMap.put(accNo, account); return accountMap; }
+	 * custMap=new HashMap<>(); custMap.put(accNo, account);
+	 * accountMap.put(customerId, custMap); return accountMap;
+	 */
+	if(custMap == null)
 	{
+		custMap=new HashMap<>();
+		accountMap.put(customerId, custMap);
+	}
+	custMap.put(accNo, account);
+	return accountMap;
+}
+public AccountInfo retrieveAccount(long customerId,long accountNo) throws CustomException
+{
+
+	Map<Long,AccountInfo> custMap=accountMap.get(customerId);
+	nullCheckMap(customerId);
+	AccountInfo check=custMap.get(accountNo);
 		
-		return accountMap.get(customerId).get(accountNo);	
-	}
-	else
-	{
-		return "accountNo";
-	}
+	return check;	
+	
+//	else
+//	{
+//	throw new CustomException("AccountId Invalid");
+//	}
 }
-
-public Object retrieveCustomer(long customerId)
+public Object retrieveCustomer(long customerId) throws CustomException
 {
-	CustomerInfo saved=customerMap.get(customerId);
-	if(saved != null)
+	CustomerInfo cusInfo=customerMap.get(customerId);
+	if(cusInfo != null)
 	{
-	return	saved;	
+	return	cusInfo;	
 	}
-	else
-	{
-		return "customerId";
-	}
+	throw new CustomException("CustomerId Invalid"); 
 }
 
 }
