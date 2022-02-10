@@ -6,8 +6,8 @@ public class AccountInfo
 	private double  balance;
 	private long    customerId;
 	private double 	deposit;
-	private double  withdrawal;
-	private boolean status;
+	private double  withdraw;
+	private boolean status=true;
 	
 	
 	public long getAccountNo() {
@@ -34,11 +34,11 @@ public class AccountInfo
 	public void setDeposit(double deposit) {
 		this.deposit = deposit;
 	}
-	public double getWithdrawal() {
-		return withdrawal;
+	public double getWithdraw() {
+		return withdraw;
 	}
-	public void setWithdrawal(double withdrawal) {
-		this.withdrawal = withdrawal;
+	public void setWithdrawal(double withdraw) {
+		this.withdraw = withdraw;
 	}
 	public boolean isStatus() {
 		return status;
