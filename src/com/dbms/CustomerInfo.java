@@ -1,10 +1,13 @@
 package com.dbms;
 
-public class CustomerInfo {
+import java.io.Serializable;
+
+public class CustomerInfo implements Serializable{
 	
 	private String customerName;
 	private String dob;
 	private String address;
+	private long   customerId; 
 	
 	public String getCustomerName() {
 		return customerName;
@@ -24,10 +27,16 @@ public class CustomerInfo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+	public long getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(long customerId) {
+		this.customerId = customerId;
+	}
 	
 	@Override
 	public String toString() {
-		return "CustomerInfo [customerName=" + customerName + ", dob=" + dob + ", address=" + address + "]";
+		return "CustomerInfo [customerName=" + customerName + ", dob=" + dob + ", address=" + address + ", customerId="
+				+ customerId + "]";
 	}	
 }	

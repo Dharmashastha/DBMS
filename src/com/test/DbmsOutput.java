@@ -26,32 +26,28 @@ case 1:
 	}
 		break;
 case 2:
-	try {
-		dbmsCall.insertValuesQuery();
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
+	/*
+	 * try { dbmsCall.insertValuesQuery(); } catch (CustomException e) {
+	 * e.printStackTrace(); }
+	 */
 		break;
 case 3:
-	try {
-		dbmsCall.updateQuery();
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
+	/*
+	 * try { dbmsCall.updateQuery(); } catch (CustomException e) {
+	 * e.printStackTrace(); }
+	 */
 		break;
 case 4:
-	try {
-		dbmsCall.deleteQuery();
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
+	/*
+	 * try { dbmsCall.deleteQuery(); } catch (CustomException e) {
+	 * e.printStackTrace(); }
+	 */
 		break;
 case 5:
-	try {
-		dbmsCall.selectQuery();
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
+	/*
+	 * try { dbmsCall.selectQuery(); } catch (CustomException e) {
+	 * e.printStackTrace(); }
+	 */
 		break;
 case 6:
 	try {

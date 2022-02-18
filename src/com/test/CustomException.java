@@ -1,5 +1,6 @@
 package com.test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -11,9 +12,14 @@ public CustomException(String message)
 	super(message);
 }
 
+public CustomException(Exception error) {
+	super(error);
+}
+
 public CustomException(IOException error) {
 	super(error);
 }
+
 
 public CustomException(SQLException error)
 {
@@ -24,4 +30,9 @@ public CustomException(ClassNotFoundException error)
 {
 	super(error);
 }
+
+public CustomException(FileNotFoundException error) {
+	super(error);
+}
+
 }

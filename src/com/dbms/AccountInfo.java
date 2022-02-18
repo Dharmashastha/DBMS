@@ -1,6 +1,8 @@
 package com.dbms;
 
-public class AccountInfo 
+import java.io.Serializable;
+
+public class AccountInfo implements Serializable
 {
 	private long    accountNo;
 	private double  balance;
@@ -49,6 +51,7 @@ public class AccountInfo
 	
 	@Override
 	public String toString() {
-		return "AccountInfo [accountNo=" + accountNo + ", balance=" + balance + ", customerId=" + customerId + "]";
+		return "AccountInfo [accountNo=" + accountNo + ", balance=" + balance + ", customerId=" + customerId
+				+ ", status=" + status + "]";
 	}	
 }

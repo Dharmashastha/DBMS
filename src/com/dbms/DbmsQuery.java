@@ -16,7 +16,7 @@ public class DbmsQuery
 
 public void createNewTableQuery() throws CustomException
 	{
-		String newTable = "CREATE TABLE Employee(EmployeeId INT,EmployeeName VARCHAR(30));";
+		String newTable = "CREATE TABLE CustomerInfo(customerName VARCHAR(30),dob VARCHAR(30),address VARCHAR(30),customerId INT);";
 		try(Statement state=ConnectionUtlity.getConnection().createStatement();)
 		{
 			if(state.execute(newTable))
@@ -30,7 +30,7 @@ public void createNewTableQuery() throws CustomException
 		
 	}
 
-public void insertValuesQuery() throws CustomException
+/*public void insertValuesQuery() throws CustomException
 	{
 		
 		//String  insertValue= "INSERT INTO Employee VALUES(105,'DHARMA');";
@@ -115,7 +115,7 @@ public void selectQuery() throws CustomException
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 public void insertPrepared() throws CustomException
 	{

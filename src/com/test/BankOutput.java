@@ -12,7 +12,7 @@ public class BankOutput {
 	private static InputCenter inputCall=new InputCenter();
 	private static BankLogic bankCall= new BankLogic();
 	
-public void customerDetails() throws CustomException
+private void customerDetails() throws CustomException
 {
 	System.out.println("How many customer's details add list:");
 	int length=inputCall.getInt();
@@ -26,19 +26,21 @@ public void customerDetails() throws CustomException
 		custCall.setDob(inputCall.getString());
 		System.out.println("Set Address:");
 		custCall.setAddress(inputCall.getString());
-		Map<Long,CustomerInfo> customer=bankCall.addCustomerDetails(custCall);
+		long custId=bankCall.layCall.addNewCustomerId();
+		custCall.setCustomerId(custId);
+		Map<Long,CustomerInfo> customer=bankCall.addCustomerDetails(custCall,custId);
 		System.out.println(customer);
 	}	
 }
 
-public void accountDetails() throws CustomException
+private void accountDetails() throws CustomException
 {
 	    AccountInfo account= new AccountInfo();
 		System.out.println("Enter the customerId:");
 		long customerId=inputCall.getLong();
-		long accNo=bankCall.addNewAccountNo();
+		long accNo=bankCall.layCall.addNewAccountNo();
 		account.setAccountNo(accNo);
-		account.setBalance(bankCall.setMinBalance());
+		account.setBalance(bankCall.layCall.setMinBalance());
 		account.setCustomerId(customerId);
 		Map<Long,Map<Long,AccountInfo>> dummyMap=bankCall.addAccountDetails(account,customerId,accNo);
 		System.out.println(dummyMap);
@@ -47,8 +49,9 @@ public void accountDetails() throws CustomException
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
-	
+
 		BankOutput outputCall=new BankOutput();
+		//Map<Long,CustomerInfo> mapCall=new HashMap<>();
 		
 		boolean flag=false;
 
@@ -57,7 +60,7 @@ while(!flag)
 {
 	System.out.println("0.Exit\n1.Add new Customer/Account\n2.Retrieve account details "
 			+ "\n3.Retrieve customer details\n4.Check account balance\n5.Deposit amount"
-			+ "\n6.Withdraw amount\n7.Change Account status");
+			+ "\n6.Withdraw amount\n7.Change Account status\n8.Map File Append\n9.Retrieve File Data");
 	
 	System.out.println("Enter the choice:");
 	int choice=inputCall.getChoice();
@@ -191,6 +194,34 @@ case 7:
 		} catch (CustomException e) {
 			e.printStackTrace();
 		}
+		break;
+}
+case 8:
+{
+	try {
+		bankCall.writeFileInfo();
+		System.out.println("CustomerMap,AccountMap,TempAccMap File Successful Append.");
+		}
+		catch(CustomException e)
+		{
+			e.printStackTrace();
+		}
+		break;
+}
+case 9:
+{	
+	try {
+		bankCall.readFileInfo();
+		System.out.println(bankCall.customerMap);
+		System.out.println(bankCall.accountMap);
+		System.out.println(bankCall.layCall.customerId);
+		System.out.println(bankCall.layCall.accountNo);
+		}
+		catch(CustomException e)
+		{
+			e.printStackTrace();
+		}
+		break;
 }
 }
 }
