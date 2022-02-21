@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.dbms.AccountInfo;
 import com.dbms.BankLogic;
+import com.dbms.BankQuery;
 import com.dbms.CustomerInfo;
 
 
@@ -12,7 +13,7 @@ public class BankOutput {
 	private static InputCenter inputCall=new InputCenter();
 	private static BankLogic bankCall= new BankLogic();
 	
-private void customerDetails() throws CustomException
+private void customerDetails(long customerId) throws CustomException
 {
 	System.out.println("How many customer's details add list:");
 	int length=inputCall.getInt();
@@ -26,14 +27,15 @@ private void customerDetails() throws CustomException
 		custCall.setDob(inputCall.getString());
 		System.out.println("Set Address:");
 		custCall.setAddress(inputCall.getString());
-		long custId=bankCall.layCall.addNewCustomerId();
+	//	long custId=bankCall.layCall.addNewCustomerId();
+		long custId=customerId;
 		custCall.setCustomerId(custId);
 		Map<Long,CustomerInfo> customer=bankCall.addCustomerDetails(custCall,custId);
 		System.out.println(customer);
 	}	
 }
 
-private void accountDetails() throws CustomException
+private void accountDetails(long AccountNo) throws CustomException
 {
 	    AccountInfo account= new AccountInfo();
 		System.out.println("Enter the customerId:");
@@ -52,7 +54,7 @@ private void accountDetails() throws CustomException
 
 		BankOutput outputCall=new BankOutput();
 		//Map<Long,CustomerInfo> mapCall=new HashMap<>();
-		
+	BankQuery  dbCall=new BankQuery();
 		boolean flag=false;
 
 		
@@ -77,7 +79,8 @@ case 1:
 		if(check.contains("Yes"))
 			{
 				try {
-					outputCall.accountDetails();
+					long accNo=dbCall.accountNo;
+					outputCall.accountDetails(accNo);
 				} catch (CustomException e) {
 					e.printStackTrace();
 				}
@@ -85,7 +88,8 @@ case 1:
 		else if(check.contains("No"))
 				{
 					try {
-						outputCall.customerDetails();
+						long custId=dbCall.customerId;
+						outputCall.customerDetails(custId);
 					} catch (CustomException e) {
 						e.printStackTrace();
 					}
@@ -223,6 +227,56 @@ case 9:
 		}
 		break;
 }
+case 10:
+{	
+	//"CREATE TABLE CustomerInfo(customerName VARCHAR(30),dob VARCHAR(30),address VARCHAR(30),customerId INT NOT NULL,PRIMARY KEY(customerId));";
+	//"CREATE TABLE AccountInfo(AccountNo INT NOT NULL, VARCHAR(30),balance INT,customerId INT ,status BOOLEAN,PRIMARY KEY(AccountNo),FOREIGN KEY (customerId) REFERENCES CustomerInfo(customerId));";
+	String newTable=inputCall.getString();
+	try {
+		dbCall.createNewTableQuery(newTable);
+	} catch (CustomException e) {
+		e.printStackTrace();
+	}
+	break;
+}
+case 11:
+{	
+	//INSERT INTO CustomerInfo VALUES(?,?,?,?);
+	String insert = inputCall.getString();
+	try {
+		dbCall.insertCustInfo(insert,bankCall.customerMap);
+	} catch (CustomException e) {
+		e.printStackTrace();
+	}
+	break;
+}
+
+case 12:
+{	
+	//INSERT INTO Employee VALUES(?,?,?,?);
+	String insert = inputCall.getString();
+	try {
+		dbCall.insertAccInfo(insert,bankCall.accountMap);
+	} catch (CustomException e) {
+		e.printStackTrace();
+	}
+	break;
+}
+
+case 13:
+{	
+	
+	String customer = inputCall.getString();
+	String account =inputCall.getString();
+	
+	try {
+		dbCall.selectWherePrepared(customer, account);
+	} catch (CustomException e) {
+		e.printStackTrace();
+	}
+	break;
+}
+
 }
 }
 }

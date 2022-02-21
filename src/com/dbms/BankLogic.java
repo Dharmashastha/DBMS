@@ -14,6 +14,7 @@ public class BankLogic {
 	public PersistantLayer layCall=new PersistantLayer();
 	InputCenter inputCall=new InputCenter();
 	Storage storageCall=new Storage();
+	
 	//AccountInfo acInfo;
 	
 	//public long customerId=100000;
@@ -169,6 +170,7 @@ public void readFileInfo() throws CustomException
 	layCall.customerId=layCall.getCustomerIdFile();
 	layCall.accountNo=layCall.getAccountNoFile();
 	customerMap=storageCall.customerMap;
-	accountMap=storageCall.accountMap;	
+	accountMap=storageCall.accountMap;
+	
 }
 }

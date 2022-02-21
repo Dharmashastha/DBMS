@@ -9,14 +9,13 @@ import java.io.ObjectOutputStream;
 import java.util.Map;
 
 import com.dbms.AccountInfo;
+import com.dbms.Connected;
 import com.dbms.CustomerInfo;
 
 
 
-public class PersistantLayer
+public class PersistantLayer implements Connected
 {
-
-	//public Cache cacheCall=new Cache(); 
 
 public long customerId=100000;
 public long accountNo=20000;
@@ -135,4 +134,25 @@ public long getAccountNoFile() throws CustomException
 				throw new CustomException(e);
 			}
 }
+
+@Override
+public void createNewTableQuery(String newTable) throws CustomException {	
+}
+
+@Override
+public void updatePrepared(String update) throws CustomException {
+}
+
+@Override
+public void insertCustInfo(String insert, Map<Long, CustomerInfo> custMap) throws CustomException {
+}
+
+@Override
+public void insertAccInfo(String insert, Map<Long, Map<Long, AccountInfo>> accMap) throws CustomException {
+}
+
+@Override
+public void selectWherePrepared(String customer, String account) throws CustomException {
+}
+
 }

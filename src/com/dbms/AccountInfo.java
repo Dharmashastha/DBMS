@@ -7,8 +7,6 @@ public class AccountInfo implements Serializable
 	private long    accountNo;
 	private double  balance;
 	private long    customerId;
-	private double 	deposit;
-	private double  withdraw;
 	private boolean status=true;
 	
 	
@@ -29,18 +27,6 @@ public class AccountInfo implements Serializable
 	}
 	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
-	}
-	public double getDeposit() {
-		return deposit;
-	}
-	public void setDeposit(double deposit) {
-		this.deposit = deposit;
-	}
-	public double getWithdraw() {
-		return withdraw;
-	}
-	public void setWithdrawal(double withdraw) {
-		this.withdraw = withdraw;
 	}
 	public boolean isStatus() {
 		return status;

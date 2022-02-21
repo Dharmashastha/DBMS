@@ -49,7 +49,6 @@ public static void closeConnection()
 		{
 		
 			connect.close();
-			//System.out.println("hi");
 		}
 	}
 	catch(SQLException e) {}

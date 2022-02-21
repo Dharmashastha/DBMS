@@ -1,7 +1,7 @@
 package com.test;
 
 import com.dbms.ConnectionUtlity;
-import com.dbms.DbmsQuery;
+import com.dbms.BankQuery;
 
 public class DbmsOutput {
 
@@ -9,7 +9,7 @@ public class DbmsOutput {
 		// TODO Auto-generated method stub
 	
 		InputCenter inputCall=new InputCenter();
-		DbmsQuery dbmsCall=new DbmsQuery();
+		BankQuery bankCall=new BankQuery();
 		//try {Class.forName("com.mysql.cj.jdbc.Driver");} 
 		//catch (ClassNotFoundException e) {e.printStackTrace();}
 		
@@ -18,54 +18,54 @@ public class DbmsOutput {
 		
 switch (choice) 
 {
-case 1:
+/*case 1:
 	try {
-		dbmsCall.createNewTableQuery();
+		bankCall.createNewTableQuery();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
 		break;
 case 2:
-	/*
-	 * try { dbmsCall.insertValuesQuery(); } catch (CustomException e) {
+	
+	 * try { bankCall.insertValuesQuery(); } catch (CustomException e) {
 	 * e.printStackTrace(); }
-	 */
+	 
 		break;
 case 3:
-	/*
-	 * try { dbmsCall.updateQuery(); } catch (CustomException e) {
+	
+	 * try { bankCall.updateQuery(); } catch (CustomException e) {
 	 * e.printStackTrace(); }
-	 */
+	 
 		break;
 case 4:
-	/*
-	 * try { dbmsCall.deleteQuery(); } catch (CustomException e) {
+	
+	 * try { bankCall.deleteQuery(); } catch (CustomException e) {
 	 * e.printStackTrace(); }
-	 */
+	 
 		break;
 case 5:
-	/*
-	 * try { dbmsCall.selectQuery(); } catch (CustomException e) {
+	
+	 * try { bankCall.selectQuery(); } catch (CustomException e) {
 	 * e.printStackTrace(); }
-	 */
+	 
 		break;
 case 6:
 	try {
-		dbmsCall.insertPrepared();
+		bankCall.insertPrepared();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
 		break;
 case 7:
 	try {
-		dbmsCall.updatePrepared();
+		bankCall.updatePrepared();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
 		break;
 case 8:
 	try {
-		dbmsCall.deletePrepared();
+		bankCall.deletePrepared();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
@@ -76,14 +76,14 @@ case 8:
 		break;
 case 9:
 	try {
-		dbmsCall.selectPrepared();
+		bankCall.selectPrepared();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
 		break;
 case 10:
 	try {
-		dbmsCall.selectWherePrepared();
+		bankCall.selectWherePrepared();
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
@@ -91,6 +91,7 @@ case 10:
 case 11:
 		ConnectionUtlity.closeConnection();
 		break;
-}		
+}*/		
+}
 }
 }
