@@ -144,15 +144,17 @@ public void updatePrepared(String update) throws CustomException {
 }
 
 @Override
-public void insertCustInfo(String insert, Map<Long, CustomerInfo> custMap) throws CustomException {
-}
-
-@Override
-public void insertAccInfo(String insert, Map<Long, Map<Long, AccountInfo>> accMap) throws CustomException {
-}
-
-@Override
 public void selectWherePrepared(String customer, String account) throws CustomException {
+}
+
+@Override
+public void insertCustInfo(String insert, String custName, String dob, String address, long customerId)
+		throws CustomException {
+}
+
+@Override
+public void insertAccInfo(String insert, long accountNo, double balance, long customerId, boolean status)
+		throws CustomException {
 }
 
 }

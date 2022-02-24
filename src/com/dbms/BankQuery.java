@@ -14,9 +14,6 @@ import com.test.InputCenter;
 public class BankQuery implements Connected
 {
 
-	public long customerId=100000;
-	public long accountNo=20000;
-	
 	InputCenter inputCall= new InputCenter(); 
 	Storage storeCall=new Storage();
 
@@ -123,66 +120,42 @@ public void selectQuery() throws CustomException
 		}
 	}*/
 
-public void insertCustInfo(String insert,Map<Long,CustomerInfo> custMap) throws CustomException
+public void insertCustInfo(String insert,String custName,String dob,String address,long customerId) throws CustomException
 	{
 		//String insert="INSERT INTO Employee VALUES(?,?)";
 		try(PreparedStatement state=ConnectionUtlity.getConnection().prepareStatement(insert);)
 			{			
-				int length = 0;
+				int length = 1;
 				
-				System.out.println(custMap);
-				Iterator<Long> custId=custMap.keySet().iterator();
-				CustomerInfo custCall=custMap.get(custId);
-				System.out.println(custId.toString());
-				while(custId.hasNext())
-				{
-					
-					String custName=custCall.getCustomerName();
-					String dob=custCall.getDob();
-					String address=custCall.getAddress();
-					long   customerId=custCall.getCustomerId();
+				
 					state.setString(1, custName);
 					state.setString(2, dob);
 					state.setString(3, address);
 					state.setLong(4, customerId);
 					state.executeUpdate();
-					length++;
-				}
+					
+				
 				System.out.println(length +" Row Created.");	
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 	}
 
-public void insertAccInfo(String insert,Map<Long,Map<Long,AccountInfo>> accMap) throws CustomException
+public void insertAccInfo(String insert,long accountNo,double balance,long customerId,boolean status) throws CustomException
 {
 	//String insert="INSERT INTO Employee VALUES(?,?)";
 	try(PreparedStatement state=ConnectionUtlity.getConnection().prepareStatement(insert);)
 		{			
-			int length = 0;
+			int length = 1;
 			
-			Iterator<Long> custId=accMap.keySet().iterator();
 			
-			while(custId.hasNext())
-			{
-				Map<Long, AccountInfo> accCall=accMap.get(custId);
-				Iterator<Long> accNo=accCall.keySet().iterator();
-				
-				while(accNo.hasNext())
-				{
-					AccountInfo accountCall=accCall.get(accNo);
-					long    accountNo=accountCall.getAccountNo();
-					double  balance=accountCall.getBalance();
-					long    customerId=accountCall.getCustomerId();
-					boolean status=accountCall.isStatus();
 					state.setLong(1, accountNo);
 					state.setDouble(2, balance);
 					state.setLong(3, customerId);
 					state.setBoolean(4, status);
-				}
-				state.executeUpdate();
-				length++;
-			}
+				
+					state.executeUpdate();
+							
 			System.out.println(length +" Row Created.");	
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -266,18 +239,23 @@ public void selectWherePrepared(String  customer,String account) throws CustomEx
 		{
 			try(ResultSet rs= state.executeQuery();)
 			{
+				while(rs.next())
+				{
 				CustomerInfo custCall=new CustomerInfo();
+			//	System.out.println(rs.getString(rs.getString("customerName")+" "+rs.getString("dob")+" "+rs.getString("address")+" "+rs.getLong("customerId")));
 				String custName=rs.getString(1);
 				String dob=rs.getString(2);
 				String address=rs.getString(3);
 				long custId=rs.getLong(4);
-				customerId=custId;
 				custCall.setCustomerName(custName);
 				custCall.setDob(dob);
 				custCall.setAddress(address);
 				custCall.setCustomerId(custId);
 				custMap.put(custId, custCall);
-			}
+				
+				}
+				System.out.println(custMap);
+			}	
 		}
 			catch (SQLException e) {
 			e.printStackTrace();
@@ -287,7 +265,10 @@ public void selectWherePrepared(String  customer,String account) throws CustomEx
 		{
 			try(ResultSet rs= stateAcc.executeQuery();)
 			{
+				while(rs.next())
+				{
 				AccountInfo accCall=new AccountInfo();
+			//	System.out.println(rs.getLong(0)+" "+rs.getDouble(1)+" "+rs.getLong(2)+" "+rs.getBoolean(3));
 				long accNo=rs.getLong(1);
 				double balance=rs.getDouble(2);
 				long custId=rs.getLong(3);
@@ -296,7 +277,6 @@ public void selectWherePrepared(String  customer,String account) throws CustomEx
 				accCall.setBalance(balance);
 				accCall.setCustomerId(custId);
 				accCall.setStatus(status);
-				accountNo=accNo;
 				tempMap=accMap.get(custId);
 				
 				if(tempMap == null)
@@ -305,7 +285,10 @@ public void selectWherePrepared(String  customer,String account) throws CustomEx
 					accMap.put(custId, tempMap);
 				}
 				tempMap.put(accNo, accCall);
-			}
+				System.out.println(tempMap);
+				}
+				
+			}	
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

@@ -11,9 +11,9 @@ import com.dbms.CustomerInfo;
 public class BankOutput {
 	
 	private static InputCenter inputCall=new InputCenter();
-	private static BankLogic bankCall= new BankLogic();
-	
-private void customerDetails(long customerId) throws CustomException
+	private static BankLogic bankCall= new BankLogic(true);
+					
+private void customerDetails() throws CustomException
 {
 	System.out.println("How many customer's details add list:");
 	int length=inputCall.getInt();
@@ -23,27 +23,39 @@ private void customerDetails(long customerId) throws CustomException
 		System.out.println(i +" customer details");
 		System.out.println("Set CustomerName:");
 		custCall.setCustomerName(inputCall.getString());
+		String custName=custCall.getCustomerName();
 		System.out.println("Set DateOfBirth:");
 		custCall.setDob(inputCall.getString());
+		String dob=custCall.getDob();
 		System.out.println("Set Address:");
 		custCall.setAddress(inputCall.getString());
-	//	long custId=bankCall.layCall.addNewCustomerId();
-		long custId=customerId;
+		String address=custCall.getAddress();
+		long custId=bankCall.connect.addNewCustomerId();
 		custCall.setCustomerId(custId);
+		System.out.println("Enter the insert customer Query:");
+		String insert = "INSERT INTO CustomerInfo VALUES(?,?,?,?)"; 
+		bankCall.connect.insertCustInfo(insert, custName, dob, address, custId);
 		Map<Long,CustomerInfo> customer=bankCall.addCustomerDetails(custCall,custId);
 		System.out.println(customer);
 	}	
 }
 
-private void accountDetails(long AccountNo) throws CustomException
+private void accountDetails() throws CustomException
 {
 	    AccountInfo account= new AccountInfo();
 		System.out.println("Enter the customerId:");
 		long customerId=inputCall.getLong();
-		long accNo=bankCall.layCall.addNewAccountNo();
+		long accNo=bankCall.connect.addNewAccountNo();
 		account.setAccountNo(accNo);
-		account.setBalance(bankCall.layCall.setMinBalance());
+		long accountNo=account.getAccountNo();
+		account.setBalance(bankCall.connect.setMinBalance());
+		double balance=account.getBalance();
 		account.setCustomerId(customerId);
+		long custId=account.getCustomerId();
+		boolean status=account.isStatus();
+		System.out.println("Enter the insert Account Query:");
+		String insert = "INSERT INTO AccountInfo VALUES(?,?,?,?);";
+		bankCall.connect.insertAccInfo(insert, accountNo, balance, custId, status);
 		Map<Long,Map<Long,AccountInfo>> dummyMap=bankCall.addAccountDetails(account,customerId,accNo);
 		System.out.println(dummyMap);
 }
@@ -54,7 +66,6 @@ private void accountDetails(long AccountNo) throws CustomException
 
 		BankOutput outputCall=new BankOutput();
 		//Map<Long,CustomerInfo> mapCall=new HashMap<>();
-	BankQuery  dbCall=new BankQuery();
 		boolean flag=false;
 
 		
@@ -62,7 +73,8 @@ while(!flag)
 {
 	System.out.println("0.Exit\n1.Add new Customer/Account\n2.Retrieve account details "
 			+ "\n3.Retrieve customer details\n4.Check account balance\n5.Deposit amount"
-			+ "\n6.Withdraw amount\n7.Change Account status\n8.Map File Append\n9.Retrieve File Data");
+			+ "\n6.Withdraw amount\n7.Change Account status\n8.Map File Append\n9.Retrieve File Data"
+			+ "\n10.MySql create Table Query\n11.MySql Select CustomerInfo,AccountInfo GetValues");
 	
 	System.out.println("Enter the choice:");
 	int choice=inputCall.getChoice();
@@ -79,8 +91,7 @@ case 1:
 		if(check.contains("Yes"))
 			{
 				try {
-					long accNo=dbCall.accountNo;
-					outputCall.accountDetails(accNo);
+					outputCall.accountDetails();
 				} catch (CustomException e) {
 					e.printStackTrace();
 				}
@@ -88,8 +99,7 @@ case 1:
 		else if(check.contains("No"))
 				{
 					try {
-						long custId=dbCall.customerId;
-						outputCall.customerDetails(custId);
+						outputCall.customerDetails();
 					} catch (CustomException e) {
 						e.printStackTrace();
 					}
@@ -230,47 +240,26 @@ case 9:
 case 10:
 {	
 	//"CREATE TABLE CustomerInfo(customerName VARCHAR(30),dob VARCHAR(30),address VARCHAR(30),customerId INT NOT NULL,PRIMARY KEY(customerId));";
-	//"CREATE TABLE AccountInfo(AccountNo INT NOT NULL, VARCHAR(30),balance INT,customerId INT ,status BOOLEAN,PRIMARY KEY(AccountNo),FOREIGN KEY (customerId) REFERENCES CustomerInfo(customerId));";
+	//"CREATE TABLE AccountInfo(AccountNo INT NOT NULL,balance INT,customerId INT ,status BOOLEAN,PRIMARY KEY(AccountNo),FOREIGN KEY (customerId) REFERENCES CustomerInfo(customerId));";
+	System.out.println("Enter the Create table Query:");
 	String newTable=inputCall.getString();
 	try {
-		dbCall.createNewTableQuery(newTable);
+		bankCall.connect.createNewTableQuery(newTable);
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}
 	break;
 }
+
 case 11:
 {	
-	//INSERT INTO CustomerInfo VALUES(?,?,?,?);
-	String insert = inputCall.getString();
-	try {
-		dbCall.insertCustInfo(insert,bankCall.customerMap);
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
-	break;
-}
-
-case 12:
-{	
-	//INSERT INTO Employee VALUES(?,?,?,?);
-	String insert = inputCall.getString();
-	try {
-		dbCall.insertAccInfo(insert,bankCall.accountMap);
-	} catch (CustomException e) {
-		e.printStackTrace();
-	}
-	break;
-}
-
-case 13:
-{	
-	
-	String customer = inputCall.getString();
-	String account =inputCall.getString();
+	//System.out.println("Enter the Customer Select Query:");
+	String customer = "select *from CustomerInfo;";
+	//System.out.println("Enter the Account Select Query:");
+	String account = "select *from AccountInfo;";
 	
 	try {
-		dbCall.selectWherePrepared(customer, account);
+		bankCall.connect.selectWherePrepared(customer, account);
 	} catch (CustomException e) {
 		e.printStackTrace();
 	}

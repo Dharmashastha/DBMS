@@ -1,8 +1,11 @@
 package com.dbms;
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import com.test.CustomException;
 import com.test.HelperUtil;
@@ -15,6 +18,9 @@ public class BankLogic {
 	InputCenter inputCall=new InputCenter();
 	Storage storageCall=new Storage();
 	
+	Properties property=new Properties();
+	
+	public Connected connect;
 	//AccountInfo acInfo;
 	
 	//public long customerId=100000;
@@ -22,6 +28,38 @@ public class BankLogic {
 
 	public Map<Long,CustomerInfo> customerMap=new HashMap<>();
 	public Map<Long,Map<Long,AccountInfo>> accountMap=new HashMap<>();
+
+public BankLogic(boolean flag) {
+	
+	loadProperty();
+	
+	String path="";
+	
+	if(flag)
+	{
+		path=property.getProperty("DbPath");
+	}
+	else
+	{
+		path=property.getProperty("FilePath");
+	}
+	
+	try {
+		Class<?> conCall=Class.forName(path);
+		Constructor<?> constr=conCall.getDeclaredConstructor(String.class);
+		Object stored=constr.newInstance();
+		connect=(Connected) stored;
+	} catch (Exception e) {
+		e.printStackTrace();
+	} 
+	
+}
+
+public void loadProperty()
+{
+	property.setProperty("DbPath", "com.dbms.BankQuery");
+	property.setProperty("FilePath", "com.test.PersistantLayer");
+}
 	
 private void nullCheckAccMap(long customerId) throws CustomException
 {
@@ -158,17 +196,17 @@ public String changeStatus(long id,long accNumber,boolean newStatus) throws Cust
 
 public void writeFileInfo() throws CustomException
 {
-	customerMap=layCall.writeCustomerFile(customerMap, accountMap);
-	accountMap=layCall.writeAccountFile(customerMap, accountMap);
+	customerMap=connect.writeCustomerFile(customerMap, accountMap);
+	accountMap=connect.writeAccountFile(customerMap, accountMap);
 	storageCall.cacheFile(customerMap, accountMap);
 }
 
 public void readFileInfo() throws CustomException
 {
-	storageCall.customerMap=layCall.getCustomerFile();
-	storageCall.accountMap=layCall.getAccountFile();
-	layCall.customerId=layCall.getCustomerIdFile();
-	layCall.accountNo=layCall.getAccountNoFile();
+	storageCall.customerMap=connect.getCustomerFile();
+	storageCall.accountMap=connect.getAccountFile();
+	layCall.customerId=connect.getCustomerIdFile();
+	layCall.accountNo=connect.getAccountNoFile();
 	customerMap=storageCall.customerMap;
 	accountMap=storageCall.accountMap;
 	
